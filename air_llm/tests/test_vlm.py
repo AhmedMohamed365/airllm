@@ -1,9 +1,6 @@
 import unittest
 from unittest.mock import patch, MagicMock
 
-import sys
-sys.path.insert(0, '..')
-
 from airllm.auto_model import AutoModel
 
 
@@ -65,8 +62,8 @@ class TestAutoModelVLM(unittest.TestCase):
     def test_vlm_base_is_vlm_layer_default(self):
         """Test that base model returns False for is_vlm_layer."""
         from airllm.airllm_base import AirLLMBaseModel
-        # AirLLMBaseModel can't be instantiated normally, test the method
-        self.assertFalse(AirLLMBaseModel.is_vlm_layer(None, 'any_layer'))
+        base = AirLLMBaseModel.__new__(AirLLMBaseModel)
+        self.assertFalse(base.is_vlm_layer('any_layer'))
 
     def test_llava_layer_names(self):
         """Test LLaVA layer name configuration."""

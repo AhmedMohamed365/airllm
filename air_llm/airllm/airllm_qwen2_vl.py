@@ -44,16 +44,12 @@ class AirLLMQwen2VL(AirLLMBaseVLM):
 
     def forward(self, input_ids=None, pixel_values=None,
                 image_grid_thw=None, **kwargs):
-        self._pixel_values = pixel_values
         self._image_grid_thw = image_grid_thw
-        self._image_features = None
 
-        result = super(AirLLMBaseVLM, self).forward(
-            input_ids=input_ids, **kwargs)
+        result = super().forward(
+            input_ids=input_ids, pixel_values=pixel_values, **kwargs)
 
-        self._pixel_values = None
         self._image_grid_thw = None
-        self._image_features = None
 
         return result
 
