@@ -18,6 +18,9 @@ else:
     from .airllm_mistral import AirLLMMistral
     from .airllm_mixtral import AirLLMMixtral
     from .airllm_base import AirLLMBaseModel
+    from .airllm_base_vlm import AirLLMBaseVLM
+    from .airllm_llava import AirLLMLlava
+    from .airllm_qwen2_vl import AirLLMQwen2VL
     from .auto_model import AutoModel
     from .utils import split_and_save_layers
     from .utils import NotEnoughSpaceException
