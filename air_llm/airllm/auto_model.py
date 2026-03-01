@@ -24,7 +24,13 @@ class AutoModel:
         else:
             config = AutoConfig.from_pretrained(pretrained_model_name_or_path, trust_remote_code=True)
 
-        if "Qwen2ForCausalLM" in config.architectures[0]:
+        if "Qwen2VLForConditionalGeneration" in config.architectures[0]:
+            return "airllm", "AirLLMQwen2VL"
+        elif "LlavaNextForConditionalGeneration" in config.architectures[0]:
+            return "airllm", "AirLLMLlava"
+        elif "LlavaForConditionalGeneration" in config.architectures[0]:
+            return "airllm", "AirLLMLlava"
+        elif "Qwen2ForCausalLM" in config.architectures[0]:
             return "airllm", "AirLLMQWen2"
         elif "QWen" in config.architectures[0]:
             return "airllm", "AirLLMQWen"

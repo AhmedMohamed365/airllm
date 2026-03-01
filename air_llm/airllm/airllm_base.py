@@ -393,6 +393,15 @@ class AirLLMBaseModel(GenerationMixin):
     def run_norm(self, layer, seq):
         return layer(seq)
 
+    def run_embed(self, layer, seq):
+        return layer(seq)
+
+    def is_vlm_layer(self, layer_name):
+        return False
+
+    def process_vlm_layer(self, layer_name, layer):
+        pass
+
     def forward(
             self,
             input_ids: torch.LongTensor = None,
@@ -405,6 +414,7 @@ class AirLLMBaseModel(GenerationMixin):
             output_attentions: Optional[bool] = None,
             output_hidden_states: Optional[bool] = None,
             return_dict: Optional[bool] = None,
+            **kwargs,
     ) -> Union[Tuple, CausalLMOutputWithPast]:
 
         if cache_utils_installed:
@@ -497,10 +507,16 @@ class AirLLMBaseModel(GenerationMixin):
 
                 # Run layer
 
+                if self.is_vlm_layer(layer_name):
+                    self.process_vlm_layer(layer_name, layer)
+
                 for j, seq in enumerate(batch):
 
+                    if self.is_vlm_layer(layer_name):
+                        continue
+
                     if layer_name == self.layer_names_dict['embed']:
-                        batch[j] = layer(seq)
+                        batch[j] = self.run_embed(layer, seq)
                     elif layer_name == self.layer_names_dict['norm']:
                         #batch[j] = layer(seq[torch.arange(n_seq), batch_eos[j]][:, None])
                         batch[j] = self.run_norm(layer, seq)
